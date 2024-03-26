@@ -14,7 +14,7 @@ Window::~Window()
   SDL_Quit();
 }
 
-void Window::init()
+void Window::init() const
 {
   if (SDL_Init(SDL_INIT_VIDEO) < 0)
   {
@@ -37,7 +37,7 @@ void Window::init()
   SDL_SetRenderDrawColor(m_renderer.get(), 255, 255, 255, 255);
 }
 
-void Window::run()
+void Window::run() const
 {
   SDL_Event event;
   SDL_PollEvent(&event);
@@ -49,14 +49,14 @@ void Window::run()
   }
 }
 
-void Window::render()
+void Window::render() const
 {
   SDL_RenderClear(m_renderer.get());
   // Draw here
   SDL_RenderPresent(m_renderer.get());
 }
 
-void Window::handle_events(const SDL_Event &event)
+void Window::handle_events(const SDL_Event &event) const
 {
   switch (event.type)
   {

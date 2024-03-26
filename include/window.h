@@ -8,10 +8,10 @@ class Window
 public:
   Window();
   ~Window();
-  void init();
-  void run();
-  void render();
-  void handle_events(const SDL_Event &event);
+  void init() const;
+  void run() const;
+  void render() const;
+  void handle_events(const SDL_Event &event) const;
 
 private:
   std::unique_ptr<SDL_Window, decltype(&SDL_DestroyWindow)> m_window;
