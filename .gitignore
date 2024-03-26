@@ -20,9 +20,6 @@ Makefile
 *.swp
 *.swo
 
-# Ignorez les fichiers de configuration spécifiques à l'utilisateur
-.vscode/
-
 # Documentation générée
 doc/
 
