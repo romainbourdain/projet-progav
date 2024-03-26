@@ -1,0 +1,30 @@
+# Fichiers compilés
+*.o
+*.so
+*.exe
+*.dll
+*.lib
+
+# Dossiers de build CMake
+build/
+bin/
+obj/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+*.cmake
+Makefile
+
+# Ignorez les fichiers de sauvegarde de l'éditeur et les fichiers temporaires
+*~
+*.swp
+*.swo
+
+# Ignorez les fichiers de configuration spécifiques à l'utilisateur
+.vscode/
+
+# Documentation générée
+doc/
+
+# Ignorez les dossiers spécifiques à SDL2 s'ils sont inclus dans le projet
+#SDL2/
