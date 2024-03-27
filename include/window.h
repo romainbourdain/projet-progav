@@ -7,7 +7,7 @@ class Window {
  public:
   Window();
   ~Window();
-  void init() const;
+  void init();
   void run() const;
   void render() const;
   void handle_events(const SDL_Event& event) const;

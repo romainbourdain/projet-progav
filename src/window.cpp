@@ -1,16 +1,12 @@
 #include <SDL.h>
 
 #include "const.h"
+#include "utils.h"
 #include "window.h"
 
 Window::Window()
-    : m_window(SDL_CreateWindow("Breakout Game", SDL_WINDOWPOS_UNDEFINED,
-                                SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH,
-                                SCREEN_HEIGHT, 0),
-               SDL_DestroyWindow),
-      m_renderer(
-          SDL_CreateRenderer(m_window.get(), -1, SDL_RENDERER_ACCELERATED),
-          SDL_DestroyRenderer) {
+    : m_window(nullptr, SDL_DestroyWindow),
+      m_renderer(nullptr, SDL_DestroyRenderer) {
   init();
 }
 
@@ -18,25 +14,21 @@ Window::~Window() {
   SDL_Quit();
 }
 
-void Window::init() const {
-  if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-    std::cerr << "SDL could not initialize! SDL_Error: " << SDL_GetError()
-              << std::endl;
-    exit(EXIT_FAILURE);
-  }
+void Window::init() {
 
-  if (!m_window) {
-    std::cerr << "Failed to open " << SCREEN_WIDTH << " x " << SCREEN_HEIGHT
-              << " window: " << SDL_GetError() << std::endl;
-    exit(EXIT_FAILURE);
-  }
+  // Initialize SDL
+  ASSERT_SDL(SDL_Init(SDL_INIT_VIDEO) == 0, "SDL could not initialize!");
 
-  if (!m_renderer) {
-    std::cerr << "Failed to create renderer: " << SDL_GetError() << std::endl;
-    exit(EXIT_FAILURE);
-  }
+  // Initialize window
+  m_window.reset(SDL_CreateWindow("Breakout Game", SDL_WINDOWPOS_UNDEFINED,
+                                  SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH,
+                                  SCREEN_HEIGHT, 0));
+  ASSERT_SDL(m_window, "Window could not be created!");
 
-  SDL_SetRenderDrawColor(m_renderer.get(), 255, 255, 255, 255);
+  // Initialize renderer
+  m_renderer.reset(
+      SDL_CreateRenderer(m_window.get(), -1, SDL_RENDERER_ACCELERATED));
+  ASSERT_SDL(m_renderer, "Renderer could not be created!");
 }
 
 void Window::run() const {
