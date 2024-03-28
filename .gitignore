@@ -13,7 +13,6 @@ CMakeFiles/
 CMakeCache.txt
 cmake_install.cmake
 *.cmake
-Makefile
 
 # Ignorez les fichiers de sauvegarde de l'éditeur et les fichiers temporaires
 *~

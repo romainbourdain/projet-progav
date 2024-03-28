@@ -1,6 +1,6 @@
 #pragma once
 
-#include <SDL2/SDL.h>
+#include <SDL.h>
 
 namespace Colors {
 inline constexpr SDL_Color RED = {255, 0, 0, 255};

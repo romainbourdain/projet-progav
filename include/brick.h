@@ -1,5 +1,5 @@
 #pragma once
-#include <SDL2/SDL.h>
+#include <SDL.h>
 #include "window.h"
 
 class Brick {
@@ -15,7 +15,9 @@ class Brick {
   int m_y;
   int m_width;
   int m_height;
-  int m_solidity;
+
   SDL_Color m_color;
   SDL_Rect m_rect;
+
+  int m_solidity;
 };
