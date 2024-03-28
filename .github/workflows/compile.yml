@@ -12,6 +12,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      - name: Install clang
+        run: sudo apt-get install clang
       - name: Install SDL2
         run: sudo apt-get install libsdl2-dev
       - name: Compiling
