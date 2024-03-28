@@ -41,5 +41,5 @@ void Game::render() const {
     brick->draw(m_window);
   }
 
-  m_window.fill_background();
+  m_window.fill_background(Constants::BACKGROUND_COLOR);
 }

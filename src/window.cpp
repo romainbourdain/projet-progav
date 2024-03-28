@@ -24,9 +24,9 @@ void Window::init() {
              "SDL could not initialize!");
 
   // Initialize window
-  m_window.reset(SDL_CreateWindow("Breakout Game", SDL_WINDOWPOS_UNDEFINED,
-                                  SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH,
-                                  SCREEN_HEIGHT, 0));
+  m_window.reset(SDL_CreateWindow(
+      "Breakout Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+      Constants::SCREEN_WIDTH, Constants::SCREEN_HEIGHT, 0));
   ASSERT_SDL(m_window, "Window could not be created!");
 
   // Initialize renderer
@@ -40,10 +40,10 @@ void Window::clear() const {
              "Failed to clear the renderer!");
 }
 
-void Window::fill_background() const {
-  ASSERT_SDL(SDL_SetRenderDrawColor(m_renderer.get(), BACKGROUND_COLOR.r,
-                                    BACKGROUND_COLOR.g, BACKGROUND_COLOR.b,
-                                    BACKGROUND_COLOR.a) == 0,
+void Window::fill_background(const SDL_Color& background_color) const {
+  ASSERT_SDL(SDL_SetRenderDrawColor(m_renderer.get(), background_color.r,
+                                    background_color.g, background_color.b,
+                                    background_color.a) == 0,
              "Failed to set the renderer draw color!");
   SDL_RenderPresent(m_renderer.get());
 }

@@ -9,7 +9,7 @@ class Window {
   void clear() const;
   SDL_Renderer& get_renderer() const;
 
-  void fill_background() const;
+  void fill_background(const SDL_Color& background_color) const;
   void draw_rect(const SDL_Rect& rect, const SDL_Color& color) const;
 
  private:
