@@ -1,4 +1,4 @@
-#include <SDL.h>
+#include <SDL2/SDL.h>
 
 #include "const.h"
 #include "utils.h"
@@ -14,10 +14,14 @@ Window::~Window() {
   SDL_Quit();
 }
 
-void Window::init() {
+SDL_Renderer& Window::get_renderer() const {
+  return *m_renderer;
+}
 
+void Window::init() {
   // Initialize SDL
-  ASSERT_SDL(SDL_Init(SDL_INIT_VIDEO) == 0, "SDL could not initialize!");
+  ASSERT_SDL(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) == 0,
+             "SDL could not initialize!");
 
   // Initialize window
   m_window.reset(SDL_CreateWindow("Breakout Game", SDL_WINDOWPOS_UNDEFINED,
@@ -31,26 +35,23 @@ void Window::init() {
   ASSERT_SDL(m_renderer, "Renderer could not be created!");
 }
 
-void Window::run() const {
-  SDL_Event event;
-  SDL_PollEvent(&event);
-  render();
-  while (SDL_WaitEvent(&event)) {
-    render();
-    handle_events(event);
-  }
+void Window::clear() const {
+  ASSERT_SDL(SDL_RenderClear(m_renderer.get()) == 0,
+             "Failed to clear the renderer!");
 }
 
-void Window::render() const {
-  SDL_RenderClear(m_renderer.get());
-  // Draw here
+void Window::fill_background() const {
+  ASSERT_SDL(SDL_SetRenderDrawColor(m_renderer.get(), BACKGROUND_COLOR.r,
+                                    BACKGROUND_COLOR.g, BACKGROUND_COLOR.b,
+                                    BACKGROUND_COLOR.a) == 0,
+             "Failed to set the renderer draw color!");
   SDL_RenderPresent(m_renderer.get());
 }
 
-void Window::handle_events(const SDL_Event& event) const {
-  switch (event.type) {
-    case SDL_QUIT:
-      exit(EXIT_SUCCESS);
-      break;
-  }
+void Window::draw_rect(const SDL_Rect& rect, const SDL_Color& color) const {
+  ASSERT_SDL(SDL_SetRenderDrawColor(m_renderer.get(), color.r, color.g, color.b,
+                                    color.a) == 0,
+             "Failed to set the renderer draw color!");
+  ASSERT_SDL(SDL_RenderFillRect(m_renderer.get(), &rect) == 0,
+             "Failed to draw the rectangle!");
 }
