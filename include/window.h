@@ -2,6 +2,7 @@
 
 #include <SDL.h>
 #include <iostream>
+#include <memory>
 
 class Window {
  public:

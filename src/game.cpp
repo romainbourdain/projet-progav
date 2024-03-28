@@ -1,4 +1,5 @@
 #include <SDL.h>
+#include <algorithm>
 
 #include "lib/const.h"
 #include "lib/utils.h"
