@@ -1,11 +1,13 @@
 #include <SDL2/SDL.h>
 #include <iostream>
 
-#include "brick.h"
-#include "const.h"
-#include "utils.h"
+#include "lib/const.h"
+#include "lib/utils.h"
 
-Brick::Brick(int x, int y, SDL_Color color, int solidity)
+#include "brick.h"
+
+Brick::Brick(const int x, const int y, const SDL_Color color,
+             const int solidity)
     : m_x(x),
       m_y(y),
       m_width(Constants::BRICK_WIDTH),
@@ -24,4 +26,8 @@ void Brick::draw(const Window& window) const {
        m_width - Constants::BRICK_BORDER_WIDTH * 2,
        m_height - Constants::BRICK_BORDER_WIDTH * 2},
       m_color);
+}
+
+SDL_Rect Brick::get_rect() const {
+  return m_rect;
 }

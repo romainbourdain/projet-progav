@@ -4,9 +4,11 @@
 
 class Brick {
  public:
-  Brick(int x, int y, SDL_Color color, int solidity = 1);
+  Brick(const int x, const int y, const SDL_Color color,
+        const int solidity = 1);
   ~Brick();
   void draw(const Window& window) const;
+  SDL_Rect get_rect() const;
 
  private:
   int m_x;

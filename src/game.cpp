@@ -1,11 +1,12 @@
 #include <SDL2/SDL.h>
 
-#include "brick.h"
-#include "const.h"
-#include "game.h"
-#include "utils.h"
+#include "lib/const.h"
+#include "lib/utils.h"
 
-Game::Game() : m_window() {
+#include "brick.h"
+#include "game.h"
+
+Game::Game() : m_window(), m_running(true) {
   generate_bricks();
 }
 

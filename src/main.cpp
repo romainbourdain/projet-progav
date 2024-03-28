@@ -2,7 +2,8 @@
 #include <cassert>
 #include <iostream>
 
-#include "const.h"
+#include "lib/const.h"
+
 #include "game.h"
 #include "window.h"
 
