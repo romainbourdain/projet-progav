@@ -4,7 +4,7 @@
 
 class Brick {
  public:
-  Brick(int x, int y, int solidity = 1);
+  Brick(int x, int y, SDL_Color color, int solidity = 1);
   ~Brick();
   void draw(const Window& window) const;
 
@@ -14,5 +14,6 @@ class Brick {
   int m_width;
   int m_height;
   int m_solidity;
+  SDL_Color m_color;
   SDL_Rect m_rect;
 };

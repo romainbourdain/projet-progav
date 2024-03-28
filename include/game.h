@@ -18,4 +18,6 @@ class Game {
  private:
   Window m_window;
   std::vector<std::shared_ptr<Brick>> m_bricks;
+
+  void generate_bricks();
 };

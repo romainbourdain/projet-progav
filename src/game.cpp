@@ -6,7 +6,7 @@
 #include "utils.h"
 
 Game::Game() : m_window() {
-  m_bricks.push_back(std::make_shared<Brick>(100, 100));
+  generate_bricks();
 }
 
 Game::~Game() {}
@@ -42,4 +42,16 @@ void Game::render() const {
   }
 
   m_window.fill_background(Constants::BACKGROUND_COLOR);
+}
+
+void Game::generate_bricks() {
+  for (int i = 0; i < Constants::BRICKS_PER_ROW; ++i) {
+    for (int j = 0; j < Constants::BRICKS_PER_COL; ++j) {
+      int index_color = rand() % Constants::BRICK_COLORS.size();
+      SDL_Color brick_color = Constants::BRICK_COLORS[index_color];
+      m_bricks.push_back(std::make_shared<Brick>(Constants::BRICK_WIDTH * i,
+                                                 Constants::BRICK_HEIGHT * j,
+                                                 brick_color));
+    }
+  }
 }
