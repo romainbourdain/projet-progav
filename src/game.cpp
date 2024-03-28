@@ -12,9 +12,9 @@ Game::Game() : m_window(), m_running(true) {
 
 Game::~Game() {}
 
-void Game::run() const {
+void Game::run() {
   SDL_Event event;
-  while (true) {
+  while (m_running) {
     while (SDL_PollEvent(&event)) {
       handle_events(event);
     }
@@ -23,11 +23,10 @@ void Game::run() const {
   }
 }
 
-void Game::handle_events(const SDL_Event& event) const {
+void Game::handle_events(const SDL_Event& event) {
   switch (event.type) {
     case SDL_QUIT:
-      SDL_Quit();
-      exit(EXIT_SUCCESS);
+      m_running = false;
     default:
       break;
   }
@@ -38,9 +37,9 @@ void Game::update() const {}
 void Game::render() const {
   m_window.clear();
 
-  for (const auto& brick : m_bricks) {
-    brick->draw(m_window);
-  }
+  std::for_each(
+      m_bricks.begin(), m_bricks.end(),
+      [&window = m_window](const auto& brick) { brick->draw(window); });
 
   m_window.fill_background(Constants::BACKGROUND_COLOR);
 }
