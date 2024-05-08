@@ -1,0 +1,21 @@
+# Fichiers compilés
+*.o
+*.so
+*.exe
+*.dll
+*.lib
+
+# Dossiers de build CMake
+build/
+bin/
+obj/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+*.cmake
+
+# Documentation générée
+doc/
+
+# Fichiers vscode
+.vscode/
