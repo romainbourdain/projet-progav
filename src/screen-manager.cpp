@@ -3,12 +3,21 @@
 
 #include <memory>
 
-ScreenManager::ScreenManager(SDLWrapper& sdl)
-    : m_titleScreen(std::make_unique<TitleScreen>(sdl)), m_sdl(sdl) {}
+ScreenManager::ScreenManager(SDL_Wrapper& sdl)
+    : m_current_screen(nullptr), m_sdl(sdl) {
+  switchToTitleScreen();
+}
 
-void ScreenManager::switchToTitleScreen() {}
+void ScreenManager::switchToTitleScreen() {
+  m_current_screen.reset(new TitleScreen(m_sdl));
+}
 
 void ScreenManager::render() const {
-  if (m_titleScreen)
-    m_titleScreen->render();
+  if (m_current_screen)
+    m_current_screen->render();
+}
+
+void ScreenManager::update() {
+  if (m_current_screen)
+    m_current_screen->update();
 }

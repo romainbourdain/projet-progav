@@ -3,19 +3,20 @@
 #include <SDL_ttf.h>
 #include <memory>
 #include <string>
+#include <tuple>
 
 #include "sdl-wrapper.h"
 #include "utils.h"
 
-SDLWrapper::SDLWrapper()
+SDL_Wrapper::SDL_Wrapper()
     : m_window(nullptr, SDL_DestroyWindow), m_renderer(nullptr) {}
 
-SDLWrapper::~SDLWrapper() {
+SDL_Wrapper::~SDL_Wrapper() {
   TTF_Quit();
   SDL_Quit();
 }
 
-void SDLWrapper::init(const std::string& title, int width, int height) {
+void SDL_Wrapper::init(const std::string& title, int width, int height) {
   ASSERT_AND_ERROR(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) == 0,
                    "SDL Init failed");
 
@@ -34,33 +35,33 @@ void SDLWrapper::init(const std::string& title, int width, int height) {
   TTF_Init();
 }
 
-void SDLWrapper::clear() {
+void SDL_Wrapper::clear() {
   SDL_RenderClear(m_renderer.get());
 }
 
-void SDLWrapper::present() {
+void SDL_Wrapper::present() {
   SDL_RenderPresent(m_renderer.get());
 }
 
-void SDLWrapper::drawRect(int x, int y, int width, int height,
-                          const SDL_Color color) const {
+void SDL_Wrapper::drawRect(int x, int y, int width, int height,
+                           const SDL_Color color) const {
   SDL_Rect rect = {x, y, width, height};
   setRenderDrawColor(color);
   SDL_RenderFillRect(m_renderer.get(), &rect);
 }
 
-void SDLWrapper::setRenderDrawColor(const SDL_Color color) const {
+void SDL_Wrapper::setRenderDrawColor(const SDL_Color color) const {
   SDL_SetRenderDrawColor(m_renderer.get(), color.r, color.g, color.b, color.a);
 }
 
-TTF_Font_ptr SDLWrapper::loadFont(const std::string& fontPath,
-                                  int fontSize) const {
+TTF_Font_ptr SDL_Wrapper::loadFont(const std::string& fontPath,
+                                   int fontSize) const {
   TTF_Font_ptr font(TTF_OpenFont(fontPath.c_str(), fontSize), TTF_CloseFont);
   ASSERT_AND_ERROR(font != nullptr, SDL_GetError());
   return font;
 }
 
-SDL_Texture_ptr SDLWrapper::loadTexture(const std::string& imagePath) const {
+SDL_Texture_ptr SDL_Wrapper::loadTexture(const std::string& imagePath) const {
   SDL_Surface_ptr surface(IMG_Load(imagePath.c_str()), SDL_FreeSurface);
   SDL_Texture_ptr texture(
       SDL_CreateTextureFromSurface(m_renderer.get(), surface.get()),
@@ -68,8 +69,8 @@ SDL_Texture_ptr SDLWrapper::loadTexture(const std::string& imagePath) const {
   return texture;
 }
 
-void SDLWrapper::drawTexture(const SDL_Texture_ptr& texture, int x, int y,
-                             int width, int height) const {
+void SDL_Wrapper::drawTexture(const SDL_Texture_ptr& texture, int x, int y,
+                              int width, int height) const {
   SDL_Rect srcRect, destRect;
 
   ASSERT_AND_ERROR(SDL_QueryTexture(texture.get(), nullptr, nullptr, &srcRect.w,
@@ -84,8 +85,8 @@ void SDLWrapper::drawTexture(const SDL_Texture_ptr& texture, int x, int y,
   SDL_RenderCopy(m_renderer.get(), texture.get(), &srcRect, &destRect);
 }
 
-void SDLWrapper::drawText(const TTF_Font_ptr& font, const std::string& text,
-                          int x, int y, SDL_Color color) const {
+void SDL_Wrapper::drawText(const TTF_Font_ptr& font, const std::string& text,
+                           int x, int y, SDL_Color color) const {
   SDL_Surface_ptr surface(TTF_RenderText_Solid(font.get(), text.c_str(), color),
                           SDL_FreeSurface);
   SDL_Texture_ptr texture(
@@ -95,4 +96,8 @@ void SDLWrapper::drawText(const TTF_Font_ptr& font, const std::string& text,
   int height = surface->h;
   SDL_Rect rect = {x - width / 2, y - height / 2, width, height};
   SDL_RenderCopy(m_renderer.get(), texture.get(), nullptr, &rect);
+}
+
+void SDL_Wrapper::getWindowSize(int& width, int& height) const {
+  SDL_GetWindowSize(m_window.get(), &width, &height);
 }

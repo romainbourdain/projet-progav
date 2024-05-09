@@ -5,7 +5,7 @@
 #include <string>
 
 GameEngine::GameEngine(const std::string& title, int width, int height)
-    : m_running(false), m_sdl(std::make_unique<SDLWrapper>()) {
+    : m_running(false), m_sdl(std::make_unique<SDL_Wrapper>()) {
   m_sdl->init(title, width, height);
 
   m_screenManager = std::make_unique<ScreenManager>(*m_sdl);
@@ -24,6 +24,7 @@ void GameEngine::run() {
     }
 
     m_sdl->clear();
+    m_screenManager->update();
     m_screenManager->render();
     m_sdl->present();
   }

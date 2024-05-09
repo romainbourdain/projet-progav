@@ -4,6 +4,7 @@
 #include <SDL_ttf.h>
 #include <memory>
 #include <string>
+#include <tuple>
 
 using SDL_Window_ptr =
     std::unique_ptr<SDL_Window, decltype(&SDL_DestroyWindow)>;
@@ -15,14 +16,14 @@ using SDL_Texture_ptr =
     std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)>;
 using TTF_Font_ptr = std::unique_ptr<TTF_Font, decltype(&TTF_CloseFont)>;
 
-class SDLWrapper {
+class SDL_Wrapper {
  private:
   SDL_Window_ptr m_window;
   SDL_Renderer_ptr m_renderer;
 
  public:
-  SDLWrapper();
-  ~SDLWrapper();
+  SDL_Wrapper();
+  ~SDL_Wrapper();
 
   void init(const std::string& title, int width, int height);
   void clear();
@@ -37,6 +38,8 @@ class SDLWrapper {
                    int height = 0) const;
   void drawText(const TTF_Font_ptr& font, const std::string& text, int x, int y,
                 const SDL_Color color) const;
+
+  void getWindowSize(int& width, int& height) const;
 };
 
-using SDLWrapper_ptr = std::shared_ptr<SDLWrapper>;
+using SDL_Wrapper_ptr = std::shared_ptr<SDL_Wrapper>;
