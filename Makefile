@@ -1,10 +1,14 @@
 CC := clang++
 
 SDL_CFLAGS := $(shell sdl2-config --cflags)
-CFLAGS ?= -Wall -Wextra -g -std=c++20 $(SDL_CFLAGS)
+SDL_IMAGE_CFLAGS := $(shell pkg-config --cflags SDL2_image)
+SDL_TTF_CFLAGS := $(shell pkg-config --cflags SDL2_ttf)
+CFLAGS ?= -Wall -Wextra -g -std=c++20 $(SDL_CFLAGS) $(SDL_IMAGE_CFLAGS) $(SDL_TTF_CFLAGS)
 
 SDL_LDLIBS := $(shell sdl2-config --libs)
-LDLIBS ?= -lm $(SDL_LDLIBS)
+SDL_IMAGE_LDLIBS := $(shell pkg-config --libs SDL2_image)
+SDL_TTF_LDLIBS := $(shell pkg-config --libs SDL2_ttf)
+LDLIBS ?= -lm $(SDL_LDLIBS) $(SDL_IMAGE_LDLIBS) $(SDL_TTF_LDLIBS)
 
 EXEC = breakout-game
 

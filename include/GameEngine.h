@@ -1,17 +1,20 @@
 #pragma once
 
-#include <SDL2/SDL.h>
+#include <SDL.h>
+#include <string>
+
+#include "SDLWrapper.h"
 #include "ScreenManager.h"
+#include "util.h"
 
 class GameEngine {
  private:
-  bool running;
-  SDL_Window* window;
-  SDL_Renderer* renderer;
-  ScreenManager screenManager;
+  bool m_running;
+  SDLWrapper_ptr m_sdl;
+  std::unique_ptr<ScreenManager> m_screenManager;
 
  public:
-  bool init(const char* title, int width, int height);
-  bool run();
-  bool cleanup();
+  GameEngine(const std::string& title, int width, int height);
+  ~GameEngine();
+  void run();
 };

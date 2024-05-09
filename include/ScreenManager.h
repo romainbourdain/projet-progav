@@ -1,13 +1,17 @@
 #pragma once
 
-#include <SDL2/SDL.h>
+#include <SDL.h>
+#include "SDLWrapper.h"
 #include "screens/TitleScreen.h"
+#include "utils.h"
 
 class ScreenManager {
  private:
-  TitleScreen titleScreen;
+  std::unique_ptr<TitleScreen> m_titleScreen;
+  SDLWrapper& m_sdl;
 
  public:
-  void init(SDL_Renderer* renderer);
-  void render();
+  explicit ScreenManager(SDLWrapper& sdl);
+  void switchToTitleScreen();
+  void render() const;
 };

@@ -1,14 +1,18 @@
 #pragma once
 
-#include <SDL2/SDL.h>
+#include <SDL.h>
+
+#include "SDLWrapper.h"
+#include "utils.h"
 
 class TitleScreen {
  private:
-  SDL_Renderer* renderer;
-  SDL_Texture* titleTexture;
+  SDLWrapper& m_sdl;
+  SDL_Texture_ptr m_titleTexture;
+  TTF_Font_ptr m_titleFont;
 
  public:
-  void init(SDL_Renderer* renderer);
-  void render();
-  void loadMedia();
+  explicit TitleScreen(SDLWrapper& sdl);
+  void loadResources();
+  void render() const;
 };
