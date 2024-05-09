@@ -1,5 +1,5 @@
-#include "ScreenManager.h"
-#include "SDLWrapper.h"
+#include "screen-manager.h"
+#include "sdl-wrapper.h"
 
 #include <memory>
 

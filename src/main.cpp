@@ -1,4 +1,4 @@
-#include "GameEngine.h"
+#include "game-engine.h"
 
 int main(int argc, char* argv[]) {
   GameEngine game("Casse Brique", 800, 600);

@@ -1,9 +1,6 @@
-#include "GameEngine.h"
-#include "utils.h"
+#include "game-engine.h"
 
 #include <SDL.h>
-#include <SDL_ttf.h>
-#include <cassert>
 #include <memory>
 #include <string>
 
@@ -13,11 +10,6 @@ GameEngine::GameEngine(const std::string& title, int width, int height)
 
   m_screenManager = std::make_unique<ScreenManager>(*m_sdl);
   m_running = true;
-}
-
-GameEngine::~GameEngine() {
-  TTF_Quit();
-  SDL_Quit();
 }
 
 void GameEngine::run() {

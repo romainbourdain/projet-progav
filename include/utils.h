@@ -1,10 +1,7 @@
 #pragma once
 
-#include <SDL.h>
 #include <cstdlib>
 #include <iostream>
-#include <memory>
-#include <string>
 
 template <typename T>
 inline void errorAndExit(const T& msg, const char* file, int line) {

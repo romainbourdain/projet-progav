@@ -4,11 +4,16 @@
 #include <memory>
 #include <string>
 
-#include "SDLWrapper.h"
+#include "sdl-wrapper.h"
 #include "utils.h"
 
 SDLWrapper::SDLWrapper()
     : m_window(nullptr, SDL_DestroyWindow), m_renderer(nullptr) {}
+
+SDLWrapper::~SDLWrapper() {
+  TTF_Quit();
+  SDL_Quit();
+}
 
 void SDLWrapper::init(const std::string& title, int width, int height) {
   ASSERT_AND_ERROR(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) == 0,
@@ -63,14 +68,20 @@ SDL_Texture_ptr SDLWrapper::loadTexture(const std::string& imagePath) const {
   return texture;
 }
 
-void SDLWrapper::drawTexture(const SDL_Texture_ptr& texture, int x,
-                             int y) const {
-  SDL_Rect rect = {x, y, 0, 0};
-  ASSERT_AND_ERROR(
-      SDL_QueryTexture(texture.get(), nullptr, nullptr, &rect.w, &rect.h) == 0,
-      SDL_GetError());
+void SDLWrapper::drawTexture(const SDL_Texture_ptr& texture, int x, int y,
+                             int width, int height) const {
+  SDL_Rect srcRect, destRect;
 
-  SDL_RenderCopy(m_renderer.get(), texture.get(), nullptr, &rect);
+  ASSERT_AND_ERROR(SDL_QueryTexture(texture.get(), nullptr, nullptr, &srcRect.w,
+                                    &srcRect.h) == 0,
+                   SDL_GetError());
+
+  destRect.x = x;
+  destRect.y = y;
+  destRect.w = width > 0 ? width : srcRect.w;
+  destRect.h = height > 0 ? height : srcRect.h;
+
+  SDL_RenderCopy(m_renderer.get(), texture.get(), &srcRect, &destRect);
 }
 
 void SDLWrapper::drawText(const TTF_Font_ptr& font, const std::string& text,
@@ -80,6 +91,8 @@ void SDLWrapper::drawText(const TTF_Font_ptr& font, const std::string& text,
   SDL_Texture_ptr texture(
       SDL_CreateTextureFromSurface(m_renderer.get(), surface.get()),
       SDL_DestroyTexture);
-  SDL_Rect rect = {x, y, surface->w, surface->h};
+  int width = surface->w;
+  int height = surface->h;
+  SDL_Rect rect = {x - width / 2, y - height / 2, width, height};
   SDL_RenderCopy(m_renderer.get(), texture.get(), nullptr, &rect);
 }

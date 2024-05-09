@@ -2,8 +2,7 @@
 
 #include <SDL.h>
 
-#include "SDLWrapper.h"
-#include "utils.h"
+#include "sdl-wrapper.h"
 
 class TitleScreen {
  private:
@@ -13,6 +12,5 @@ class TitleScreen {
 
  public:
   explicit TitleScreen(SDLWrapper& sdl);
-  void loadResources();
   void render() const;
 };

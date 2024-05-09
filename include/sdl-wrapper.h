@@ -5,15 +5,15 @@
 #include <memory>
 #include <string>
 
-#include "utils.h"
-
 using SDL_Window_ptr =
     std::unique_ptr<SDL_Window, decltype(&SDL_DestroyWindow)>;
 using SDL_Renderer_ptr = std::shared_ptr<SDL_Renderer>;
 using SDL_Surface_ptr =
     std::unique_ptr<SDL_Surface, decltype(&SDL_FreeSurface)>;
-using SDL_Texture_ptr = std::shared_ptr<SDL_Texture>;
-using TTF_Font_ptr = std::shared_ptr<TTF_Font>;
+
+using SDL_Texture_ptr =
+    std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)>;
+using TTF_Font_ptr = std::unique_ptr<TTF_Font, decltype(&TTF_CloseFont)>;
 
 class SDLWrapper {
  private:
@@ -22,6 +22,7 @@ class SDLWrapper {
 
  public:
   SDLWrapper();
+  ~SDLWrapper();
 
   void init(const std::string& title, int width, int height);
   void clear();
@@ -32,7 +33,8 @@ class SDLWrapper {
   void setRenderDrawColor(const SDL_Color color) const;
 
   void drawRect(int x, int y, int width, int height, SDL_Color color) const;
-  void drawTexture(const SDL_Texture_ptr& texture, int x, int y) const;
+  void drawTexture(const SDL_Texture_ptr& texture, int x, int y, int width = 0,
+                   int height = 0) const;
   void drawText(const TTF_Font_ptr& font, const std::string& text, int x, int y,
                 const SDL_Color color) const;
 };

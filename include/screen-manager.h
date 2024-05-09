@@ -1,9 +1,9 @@
 #pragma once
 
 #include <SDL.h>
-#include "SDLWrapper.h"
-#include "screens/TitleScreen.h"
-#include "utils.h"
+
+#include "screens/title-screen.h"
+#include "sdl-wrapper.h"
 
 class ScreenManager {
  private:

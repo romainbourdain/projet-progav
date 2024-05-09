@@ -3,9 +3,8 @@
 #include <SDL.h>
 #include <string>
 
-#include "SDLWrapper.h"
-#include "ScreenManager.h"
-#include "util.h"
+#include "screen-manager.h"
+#include "sdl-wrapper.h"
 
 class GameEngine {
  private:
@@ -15,6 +14,5 @@ class GameEngine {
 
  public:
   GameEngine(const std::string& title, int width, int height);
-  ~GameEngine();
   void run();
 };
