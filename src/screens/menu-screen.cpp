@@ -1,4 +1,5 @@
 #include "screens/menu-screen.h"
+#include "screens/title-screen.h"
 
 MenuScreen::MenuScreen(ScreenManager& screen_manager, SDL_Wrapper& sdl)
     : Screen(screen_manager, sdl),
@@ -8,14 +9,17 @@ MenuScreen::MenuScreen(ScreenManager& screen_manager, SDL_Wrapper& sdl)
   m_levels.push_back("Level 1");
   m_levels.push_back("Level 2");
   m_levels.push_back("Level 3");
+  m_levels.push_back("Level 4");
+  m_levels.push_back("Level 5");
 }
 
 void MenuScreen::render() const {
   for (int i = 0; i < m_levels.size(); i++) {
-    m_sdl.drawText(m_font, m_levels[i], 100, 100 + i * 50,
-                   {255, 255, 255, 255});
+    m_sdl.drawText(m_font, m_levels[i], 400,
+                   300 + i * 50 - m_levels.size() * 25, {255, 255, 255, 255});
     if (i == m_selected_level) {
-      m_sdl.drawText(m_font, ">", 80, 100 + i * 50, {255, 255, 255, 255});
+      m_sdl.drawText(m_font, ">", 340, 300 + i * 50 - m_levels.size() * 25,
+                     {255, 255, 255, 255});
     }
   }
 }
@@ -28,6 +32,10 @@ void MenuScreen::handleEvent(const SDL_Event& event) {
         break;
       case SDLK_DOWN:
         selectNextLevel();
+        break;
+      case SDLK_SPACE:
+        m_screen_manager.changeScreen(
+            std::make_shared<TitleScreen>(m_screen_manager, m_sdl));
         break;
     }
   }

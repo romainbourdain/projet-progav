@@ -9,8 +9,8 @@
 class GameEngine {
  private:
   bool m_running;
-  SDL_Wrapper_ptr m_sdl;
-  std::unique_ptr<ScreenManager> m_screenManager;
+  SDL_Wrapper m_sdl;
+  ScreenManager m_screenManager;
 
  public:
   GameEngine(const std::string& title, int width, int height);

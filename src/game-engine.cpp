@@ -5,11 +5,10 @@
 #include <string>
 
 GameEngine::GameEngine(const std::string& title, int width, int height)
-    : m_running(false), m_sdl(std::make_unique<SDL_Wrapper>()) {
-  m_sdl->init(title, width, height);
+    : m_running(false), m_sdl(), m_screenManager(m_sdl) {
+  m_sdl.init(title, width, height);
 
-  m_screenManager = std::make_unique<ScreenManager>(*m_sdl);
-  m_screenManager->init();
+  m_screenManager.init();
   m_running = true;
 }
 
@@ -22,12 +21,12 @@ void GameEngine::run() {
         m_running = false;
         std::exit(EXIT_SUCCESS);
       }
-      m_screenManager->handleEvent(event);
+      m_screenManager.handleEvent(event);
     }
 
-    m_sdl->clear();
-    m_screenManager->update();
-    m_screenManager->render();
-    m_sdl->present();
+    m_sdl.clear();
+    m_screenManager.update();
+    m_screenManager.render();
+    m_sdl.present();
   }
 }
