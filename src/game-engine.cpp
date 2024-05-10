@@ -9,6 +9,7 @@ GameEngine::GameEngine(const std::string& title, int width, int height)
   m_sdl->init(title, width, height);
 
   m_screenManager = std::make_unique<ScreenManager>(*m_sdl);
+  m_screenManager->init();
   m_running = true;
 }
 
@@ -21,6 +22,7 @@ void GameEngine::run() {
         m_running = false;
         std::exit(EXIT_SUCCESS);
       }
+      m_screenManager->handleEvent(event);
     }
 
     m_sdl->clear();

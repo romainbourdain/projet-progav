@@ -1,10 +1,11 @@
 #include "screens/title-screen.h"
+#include "screens/menu-screen.h"
 #include "sdl-wrapper.h"
 
 #include <iostream>
 
-TitleScreen::TitleScreen(SDL_Wrapper& sdl)
-    : Screen(sdl),
+TitleScreen::TitleScreen(ScreenManager& screen_manager, SDL_Wrapper& sdl)
+    : Screen(screen_manager, sdl),
       m_titleTexture(m_sdl.loadTexture("assets/images/title-screen.png")),
       m_titleFont(m_sdl.loadFont("../assets/fonts/Minecraft.ttf", 24)),
       m_scale(1.0f) {
@@ -21,3 +22,15 @@ void TitleScreen::render() const {
 }
 
 void TitleScreen::update() {}
+
+void TitleScreen::handleEvent(const SDL_Event& event) {
+  if (event.type == SDL_KEYDOWN) {
+    switch (event.key.keysym.sym) {
+      case SDLK_SPACE:
+        std::cout << "Space pressed" << std::endl;
+        m_screen_manager.changeScreen(
+            std::make_shared<MenuScreen>(m_screen_manager, m_sdl));
+        break;
+    }
+  }
+}
