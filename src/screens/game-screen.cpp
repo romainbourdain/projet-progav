@@ -1,24 +1,22 @@
 #include "screens/game-screen.h"
-#include "screen-manager.h"
+#include "screens/screen-manager.h"
+#include "screens/title-screen.h"
+#include "sdl-wrapper.h"
 
-GameScreen::GameScreen(ScreenManager& screen_manager, SDL_Wrapper& sdl,
-                       int level)
-    : Screen(screen_manager, sdl), m_level(level) {
-  // initialize brick grid
-  for (int i = 0; i < 3; i++) {
-    for (int j = 0; j < 10; j++) {
-      m_bricks.push_back(
-          std::make_unique<Brick>(sdl, 50 + j * 50, 50 + i * 20, 50, 20, 1));
-    }
+GameScreen::GameScreen(ScreenManager& screen_manager)
+    : Screen(screen_manager) {}
+
+void GameScreen::handle_events() {
+  if (SDL_Wrapper::is_key_pressed(SDL_SCANCODE_ESCAPE)) {
+    m_screen_manager.change_screen(
+        std::make_shared<TitleScreen>(m_screen_manager));
   }
 }
 
-void GameScreen::render() const {
-  for (const auto& brick : m_bricks) {
-    brick->render();
-  }
+void GameScreen::update() {
+  // Mise à jour de l'état de jeu
 }
 
-void GameScreen::update() {}
-
-void GameScreen::handleEvent(const SDL_Event& event) {}
+void GameScreen::render() {
+  // Rendu de l'état de jeu
+}

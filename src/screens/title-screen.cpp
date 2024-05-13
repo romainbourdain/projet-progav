@@ -1,33 +1,22 @@
 #include "screens/title-screen.h"
-#include "screens/menu-screen.h"
+#include "screens/game-screen.h"
+#include "screens/screen-manager.h"
 #include "sdl-wrapper.h"
 
-#include <iostream>
+TitleScreen::TitleScreen(ScreenManager& state_manager)
+    : Screen(m_screen_manager) {}
 
-TitleScreen::TitleScreen(ScreenManager& screen_manager, SDL_Wrapper& sdl)
-    : Screen(screen_manager, sdl),
-      m_titleTexture(m_sdl.loadTexture("assets/images/title-screen.png")),
-      m_scale(1.0f) {
-  m_last_time = SDL_GetTicks();
-}
-
-void TitleScreen::render() const {
-  int w = 800;
-  int h = 600;
-
-  m_sdl.drawTexture(m_titleTexture, 0, 0, w, h);
-  m_sdl.drawText("Press Space to Start", w / 2, h - 20, {255, 255, 255, 255});
-}
-
-void TitleScreen::update() {}
-
-void TitleScreen::handleEvent(const SDL_Event& event) {
-  if (event.type == SDL_KEYDOWN) {
-    switch (event.key.keysym.sym) {
-      case SDLK_SPACE:
-        m_screen_manager.changeScreen(
-            std::make_shared<MenuScreen>(m_screen_manager, m_sdl));
-        break;
-    }
+void TitleScreen::handle_events() {
+  if (SDL_Wrapper::is_key_pressed(SDL_SCANCODE_RETURN)) {
+    m_screen_manager.change_screen(
+        std::make_shared<GameScreen>(m_screen_manager));
   }
+}
+
+void TitleScreen::update() {
+  // Mise à jour de l'écran titre
+}
+
+void TitleScreen::render() {
+  // Rendu de l'état du titre
 }
