@@ -7,6 +7,7 @@
 GameEngine::GameEngine(const std::string& title, int width, int height)
     : m_running(false), m_sdl(), m_screenManager(m_sdl) {
   m_sdl.init(title, width, height);
+  m_sdl.loadFont("../assets/fonts/Minecraft.ttf", 24);
 
   m_screenManager.init();
   m_running = true;

@@ -11,7 +11,6 @@ class MenuScreen : public Screen {
  private:
   std::vector<std::string> m_levels;
   int m_selected_level;
-  TTF_Font_ptr m_font;
 
  public:
   explicit MenuScreen(ScreenManager& screen_manager, SDL_Wrapper& sdl);

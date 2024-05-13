@@ -9,7 +9,6 @@
 class TitleScreen : public Screen {
  private:
   SDL_Texture_ptr m_titleTexture;
-  TTF_Font_ptr m_titleFont;
 
   float m_scale;
   Uint32 m_last_time;

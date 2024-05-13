@@ -9,7 +9,9 @@
 #include "utils.h"
 
 SDL_Wrapper::SDL_Wrapper()
-    : m_window(nullptr, SDL_DestroyWindow), m_renderer(nullptr) {}
+    : m_window(nullptr, SDL_DestroyWindow),
+      m_renderer(nullptr, SDL_DestroyRenderer),
+      m_font(nullptr, TTF_CloseFont) {}
 
 SDL_Wrapper::~SDL_Wrapper() {
   TTF_Quit();
@@ -28,8 +30,7 @@ void SDL_Wrapper::init(const std::string& title, int width, int height) {
 
   // Create renderer
   m_renderer.reset(
-      SDL_CreateRenderer(m_window.get(), -1, SDL_RENDERER_ACCELERATED),
-      SDL_DestroyRenderer);
+      SDL_CreateRenderer(m_window.get(), -1, SDL_RENDERER_ACCELERATED));
   ASSERT_AND_ERROR(m_renderer != nullptr, "Renderer creation failed");
 
   TTF_Init();
@@ -54,11 +55,9 @@ void SDL_Wrapper::setRenderDrawColor(const SDL_Color color) const {
   SDL_SetRenderDrawColor(m_renderer.get(), color.r, color.g, color.b, color.a);
 }
 
-TTF_Font_ptr SDL_Wrapper::loadFont(const std::string& fontPath,
-                                   int fontSize) const {
-  TTF_Font_ptr font(TTF_OpenFont(fontPath.c_str(), fontSize), TTF_CloseFont);
-  ASSERT_AND_ERROR(font != nullptr, SDL_GetError());
-  return font;
+void SDL_Wrapper::loadFont(const std::string& fontPath, int fontSize) {
+  m_font.reset(TTF_OpenFont(fontPath.c_str(), fontSize));
+  ASSERT_AND_ERROR(m_font != nullptr, SDL_GetError());
 }
 
 SDL_Texture_ptr SDL_Wrapper::loadTexture(const std::string& imagePath) const {
@@ -85,10 +84,10 @@ void SDL_Wrapper::drawTexture(const SDL_Texture_ptr& texture, int x, int y,
   SDL_RenderCopy(m_renderer.get(), texture.get(), &srcRect, &destRect);
 }
 
-void SDL_Wrapper::drawText(const TTF_Font_ptr& font, const std::string& text,
-                           int x, int y, SDL_Color color) const {
-  SDL_Surface_ptr surface(TTF_RenderText_Solid(font.get(), text.c_str(), color),
-                          SDL_FreeSurface);
+void SDL_Wrapper::drawText(const std::string& text, int x, int y,
+                           SDL_Color color) const {
+  SDL_Surface_ptr surface(
+      TTF_RenderText_Solid(m_font.get(), text.c_str(), color), SDL_FreeSurface);
   SDL_Texture_ptr texture(
       SDL_CreateTextureFromSurface(m_renderer.get(), surface.get()),
       SDL_DestroyTexture);

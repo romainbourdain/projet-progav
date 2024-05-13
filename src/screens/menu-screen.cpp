@@ -1,11 +1,9 @@
 #include "screens/menu-screen.h"
+#include "screens/game-screen.h"
 #include "screens/title-screen.h"
 
 MenuScreen::MenuScreen(ScreenManager& screen_manager, SDL_Wrapper& sdl)
-    : Screen(screen_manager, sdl),
-      m_levels(),
-      m_selected_level(0),
-      m_font(m_sdl.loadFont("../assets/fonts/Minecraft.ttf", 24)) {
+    : Screen(screen_manager, sdl), m_levels(), m_selected_level(0) {
   m_levels.push_back("Level 1");
   m_levels.push_back("Level 2");
   m_levels.push_back("Level 3");
@@ -15,10 +13,10 @@ MenuScreen::MenuScreen(ScreenManager& screen_manager, SDL_Wrapper& sdl)
 
 void MenuScreen::render() const {
   for (int i = 0; i < m_levels.size(); i++) {
-    m_sdl.drawText(m_font, m_levels[i], 400,
-                   300 + i * 50 - m_levels.size() * 25, {255, 255, 255, 255});
+    m_sdl.drawText(m_levels[i], 400, 300 + i * 50 - m_levels.size() * 25,
+                   {255, 255, 255, 255});
     if (i == m_selected_level) {
-      m_sdl.drawText(m_font, ">", 340, 300 + i * 50 - m_levels.size() * 25,
+      m_sdl.drawText(">", 340, 300 + i * 50 - m_levels.size() * 25,
                      {255, 255, 255, 255});
     }
   }
@@ -34,8 +32,8 @@ void MenuScreen::handleEvent(const SDL_Event& event) {
         selectNextLevel();
         break;
       case SDLK_SPACE:
-        m_screen_manager.changeScreen(
-            std::make_shared<TitleScreen>(m_screen_manager, m_sdl));
+        m_screen_manager.changeScreen(std::make_shared<GameScreen>(
+            m_screen_manager, m_sdl, m_selected_level + 1));
         break;
     }
   }
