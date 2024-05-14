@@ -2,6 +2,8 @@
 
 #include "screens/screen.h"
 
+#include <iostream>
+
 class ScreenManager {
  public:
   inline void change_screen(ScreenPtr screen);
@@ -13,6 +15,6 @@ class ScreenManager {
   ScreenPtr m_current_screen;
 };
 
-void ScreenManager::change_screen(ScreenPtr screen) {
+inline void ScreenManager::change_screen(ScreenPtr screen) {
   m_current_screen = screen;
 }

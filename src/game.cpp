@@ -10,7 +10,7 @@ Game::Game(const std::string& title, int width, int height)
 }
 
 Game::~Game() {
-  SDL_Wrapper::quit();
+  std::cout << "Game destructor" << std::endl;
 }
 
 void Game::run() {

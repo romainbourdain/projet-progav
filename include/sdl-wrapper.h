@@ -56,6 +56,18 @@ class SDL_Wrapper {
   static void quit();
 
   /**
+  * @brief Obtient la largeur de la fenêtre.
+  * @return Largeur de la fenêtre.
+ */
+  static int get_window_width();
+
+  /**
+   * @brief Obtient la hauteur de la fenêtre.
+   * @return Hauteur de la fenêtre.
+   */
+  static int get_window_height();
+
+  /**
    * @brief Charge une texture depuis un fichier.
    * @param path Chemin du fichier de texture.
    * @return SDL_Texture_ptr Texture chargée.
@@ -91,7 +103,7 @@ class SDL_Wrapper {
    * @param color Couleur du texte.
    * @param origin Origine du texte (par défaut TOP_LEFT).
    */
-  static void render_text(const std::string& text, TTF_Font_ptr font, int x,
+  static void render_text(const std::string& text, TTF_Font_ptr& font, int x,
                           int y, SDL_Color color,
                           Origin origin = Origin::TOP_LEFT);
 
