@@ -4,8 +4,9 @@
 
 class Entity {
  public:
-  Entity(int x, int y, int width, int height)
-      : m_rect(SDL_Wrapper::get_rect_with_origin(x, y, width, height)) {}
+  Entity(int x, int y, int width, int height, SDL_Texture_ptr& texture)
+      : m_rect(SDL_Wrapper::get_rect_with_origin(x, y, width, height)),
+        m_texture(texture) {}
   virtual ~Entity() = default;
 
   virtual void update() = 0;
@@ -14,6 +15,7 @@ class Entity {
 
  protected:
   SDL_Rect m_rect;
+  SDL_Texture_ptr m_texture;
 };
 
 inline SDL_Rect Entity::get_rect() const {

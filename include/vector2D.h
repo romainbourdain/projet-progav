@@ -46,6 +46,11 @@ class Vector2D {
     y *= scalar;
   }
 
+  void operator*=(const Vector2D<T>& other) {
+    x *= other.x;
+    y *= other.y;
+  }
+
   void operator/=(T scalar) {
     x /= scalar;
     y /= scalar;

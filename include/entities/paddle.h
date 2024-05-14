@@ -4,7 +4,8 @@
 
 class Paddle : public Entity {
  public:
-  Paddle(int x, int y, int width, int height, int speed);
+  Paddle(int x, int y, int width, int height, SDL_Texture_ptr& texture,
+         int speed);
 
   void update() override;
   void render() const override;
