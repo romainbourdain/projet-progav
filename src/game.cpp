@@ -1,4 +1,5 @@
 #include "game.h"
+#include "config.h"
 #include "screens/title-screen.h"
 #include "sdl-wrapper.h"
 
@@ -18,6 +19,8 @@ void Game::run() {
     handle_events();
     update();
     render();
+
+    SDL_Wrapper::limit_fps(Config::FRAMES_PER_SECOND);
   }
 }
 

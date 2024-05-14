@@ -1,5 +1,6 @@
 #include "screens/title-screen.h"
 #include <iostream>
+#include "config.h"
 #include "screens/game-screen.h"
 #include "screens/screen-manager.h"
 #include "sdl-wrapper.h"
@@ -28,13 +29,12 @@ void TitleScreen::update() {
 }
 
 void TitleScreen::render() {
-  int window_width = SDL_Wrapper::get_window_width();
-  int window_height = SDL_Wrapper::get_window_height();
 
-  SDL_Wrapper::render_texture(m_background, 0, 0, window_width, window_height);
+  SDL_Wrapper::render_texture(m_background, 0, 0, Config::WINDOW_WIDTH,
+                              Config::WINDOW_HEIGHT);
 
-  int subtitle_x = window_width / 2;
-  int subtitle_y = window_height - 50;
+  int subtitle_x = Config::WINDOW_WIDTH / 2;
+  int subtitle_y = Config::WINDOW_HEIGHT - 50;
   SDL_Wrapper::render_text(m_subtitle_text, m_font, subtitle_x, subtitle_y,
                            m_text_color, SDL_Wrapper::Origin::CENTER);
 }

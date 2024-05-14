@@ -40,7 +40,7 @@ class SDL_Wrapper {
   /**
    * @brief Enumération pour définir l'origine d'un rectangle.
    */
-  enum class Origin { TOP_LEFT, CENTER };
+  enum class Origin { TOP_LEFT, BOTTOM_LEFT, TOP_RIGHT, BOTTOM_RIGHT, CENTER };
 
   /**
    * @brief Initialise SDL, la fenêtre et le renderer.
@@ -54,18 +54,6 @@ class SDL_Wrapper {
    * @brief Quitte SDL et nettoie les ressources.
    */
   static void quit();
-
-  /**
-  * @brief Obtient la largeur de la fenêtre.
-  * @return Largeur de la fenêtre.
- */
-  static int get_window_width();
-
-  /**
-   * @brief Obtient la hauteur de la fenêtre.
-   * @return Hauteur de la fenêtre.
-   */
-  static int get_window_height();
 
   /**
    * @brief Charge une texture depuis un fichier.
@@ -140,7 +128,7 @@ class SDL_Wrapper {
    * @return SDL_Rect Rectangle calculé.
    */
   static SDL_Rect get_rect_with_origin(int x, int y, int width, int height,
-                                       Origin origin);
+                                       Origin origin = Origin::TOP_LEFT);
 
   // Gestion des entrées
   /**

@@ -1,6 +1,7 @@
 #include "sdl-wrapper.h"
 #include <algorithm>
 #include <iostream>
+#include "config.h"
 
 SDL_Window_ptr SDL_Wrapper::s_window(nullptr, SDL_DestroyWindow);
 SDL_Renderer_ptr SDL_Wrapper::s_renderer(nullptr, SDL_DestroyRenderer);
@@ -61,18 +62,6 @@ void SDL_Wrapper::quit() {
   SDL_Quit();
 
   std::cout << "SDL quit successfully." << std::endl;
-}
-
-int SDL_Wrapper::get_window_width() {
-  int width;
-  SDL_GetWindowSize(s_window.get(), &width, nullptr);
-  return width;
-}
-
-int SDL_Wrapper::get_window_height() {
-  int height;
-  SDL_GetWindowSize(s_window.get(), nullptr, &height);
-  return height;
 }
 
 SDL_Texture_ptr SDL_Wrapper::load_texture(const std::string& path) {
@@ -143,6 +132,9 @@ void SDL_Wrapper::draw_rect(int x, int y, int width, int height,
 }
 
 void SDL_Wrapper::clear() {
+  SDL_Color BackgroundColor = Config::BACKGROUND_COLOR;
+  SDL_SetRenderDrawColor(s_renderer.get(), BackgroundColor.r, BackgroundColor.g,
+                         BackgroundColor.b, BackgroundColor.a);
   if (SDL_RenderClear(s_renderer.get()) != 0) {
     throw SDLException("Failed to clear renderer! SDL Error: " +
                        std::string(SDL_GetError()));
@@ -157,6 +149,12 @@ SDL_Rect SDL_Wrapper::get_rect_with_origin(int x, int y, int width, int height,
                                            Origin origin) {
   if (origin == Origin::TOP_LEFT) {
     return {x, y, width, height};
+  } else if (origin == Origin::TOP_RIGHT) {
+    return {x - width, y, width, height};
+  } else if (origin == Origin::BOTTOM_LEFT) {
+    return {x, y - height, width, height};
+  } else if (origin == Origin::BOTTOM_RIGHT) {
+    return {x - width, y - height, width, height};
   } else if (origin == Origin::CENTER) {
     return {x - width / 2, y - height / 2, width, height};
   } else {
