@@ -28,6 +28,7 @@ GameManager::GameManager(std::string& level_path)
                          m_ball_texture, Vector2D<double>(1, -1).normalize(),
                          Config::BALL_SPEED));
   load_level();
+  std::cout << "GameManager created" << std::endl;
 }
 
 void GameManager::update() {
@@ -55,7 +56,6 @@ void GameManager::check_collisions() {
     if (ball_rect.y + ball_rect.h > Config::WINDOW_HEIGHT) {
       m_lives--;
       if (m_lives <= 0) {
-        // game over
         m_is_playing = false;
       }
     }
@@ -63,7 +63,6 @@ void GameManager::check_collisions() {
 }
 
 void GameManager::load_level() {
-  m_bricks.clear();
 
   std::ifstream level_file("levels/" + m_level_path);
   if (!level_file.is_open()) {
@@ -89,6 +88,7 @@ void GameManager::load_level() {
 }
 
 void GameManager::reset() {
+
   m_balls.clear();
   m_balls.push_back(Ball(Config::WINDOW_WIDTH / 2, Config::WINDOW_HEIGHT / 2,
                          Config::BALL_RADIUS, Config::BALL_RADIUS,

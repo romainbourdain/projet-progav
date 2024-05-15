@@ -32,7 +32,7 @@ class GameManager {
   Paddle m_paddle;
   std::vector<Brick> m_bricks;
 
-  std::string& m_level_path;
+  std::string m_level_path;
 
   int m_score;
   int m_lives;

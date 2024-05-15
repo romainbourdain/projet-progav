@@ -61,10 +61,5 @@ void GameScreen::render() {
         "Press SPACE to restart", m_subtitle_font, Config::WINDOW_WIDTH / 2,
         Config::WINDOW_HEIGHT / 2 + 15, Config::FOREGROUND_COLOR,
         SDL_Wrapper::Origin::CENTER);
-    SDL_Wrapper::render_text(
-
-        "Press ESCAPE to leave", m_subtitle_font, Config::WINDOW_WIDTH / 2,
-        Config::WINDOW_HEIGHT / 2 + 40, Config::FOREGROUND_COLOR,
-        SDL_Wrapper::Origin::CENTER);
   }
 }
