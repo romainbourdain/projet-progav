@@ -1,7 +1,11 @@
 #include "game-manager.h"
 #include "config.h"
 
-GameManager::GameManager()
+#include <fstream>
+#include <iostream>
+#include <sstream>
+
+GameManager::GameManager(std::string& level_path)
     : m_paddle_texture(SDL_Wrapper::load_texture("assets/images/paddle.png")),
       m_ball_texture(SDL_Wrapper::load_texture("assets/images/ball.png")),
       m_brick_textures(
@@ -10,9 +14,12 @@ GameManager::GameManager()
            SDL_Wrapper::load_texture("assets/images/brick-3.png"),
            SDL_Wrapper::load_texture("assets/images/brick-4.png"),
            SDL_Wrapper::load_texture("assets/images/brick-5.png")}),
+      m_background_texture(
+          SDL_Wrapper::load_texture("assets/images/game-background.png")),
 
       m_paddle(Config::WINDOW_WIDTH / 2, Config::PADDLE_Y, Config::PADDLE_WIDTH,
                Config::PADDLE_HEIGHT, m_paddle_texture, Config::PADDLE_SPEED),
+      m_level_path(level_path),
       m_score(0),
       m_lives(Config::LIFE_COUNT),
       m_is_playing(true) {
@@ -56,14 +63,28 @@ void GameManager::check_collisions() {
 }
 
 void GameManager::load_level() {
-  for (int y = 0; y < 3; y++) {
-    for (int x = 0; x < 10; x++) {
-      int resistance = (x + y) % 5 + 1;
-      m_bricks.push_back(Brick(x * Config::BRICK_WIDTH,
-                               y * Config::BRICK_HEIGHT, Config::BRICK_WIDTH,
-                               Config::BRICK_HEIGHT, m_brick_textures,
-                               resistance));
+  m_bricks.clear();
+
+  std::ifstream level_file("levels/" + m_level_path);
+  if (!level_file.is_open()) {
+    throw std::runtime_error("Failed to open level file: " + m_level_path);
+  }
+
+  std::string line;
+  int row = 0;
+
+  while (std::getline(level_file, line)) {
+    for (size_t col = 0; col < line.size() && col < 10; col++) {
+      char brick_char = line[col];
+      if (brick_char >= '1' && brick_char <= '5') {
+        int resistance = brick_char - '0';
+        m_bricks.push_back(Brick(col * Config::BRICK_WIDTH,
+                                 row * Config::BRICK_HEIGHT,
+                                 Config::BRICK_WIDTH, Config::BRICK_HEIGHT,
+                                 m_brick_textures, resistance));
+      }
     }
+    row++;
   }
 }
 
@@ -84,4 +105,20 @@ void GameManager::reset() {
   m_score = 0;
   m_lives = Config::LIFE_COUNT;
   m_is_playing = true;
+}
+
+void GameManager::render() const {
+  SDL_Wrapper::render_texture(m_background_texture, 0, 0, Config::WINDOW_WIDTH,
+                              Config::WINDOW_HEIGHT,
+                              SDL_Wrapper::Origin::TOP_LEFT);
+
+  for (const auto& brick : m_bricks) {
+    brick.render();
+  }
+
+  m_paddle.render();
+
+  for (const auto& ball : m_balls) {
+    ball.render();
+  }
 }

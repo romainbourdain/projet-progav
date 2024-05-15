@@ -4,7 +4,8 @@
 #include "screens/title-screen.h"
 #include "sdl-wrapper.h"
 
-GameScreen::GameScreen(ScreenManager& screen_manager) : Screen(screen_manager) {
+GameScreen::GameScreen(ScreenManager& screen_manager, std::string& level_path)
+    : Screen(screen_manager), m_game_manager(level_path) {
   m_title_font = SDL_Wrapper::load_font("assets/fonts/Minecraft.ttf", 24);
   m_subtitle_font = SDL_Wrapper::load_font("assets/fonts/Minecraft.ttf", 16);
 
@@ -26,17 +27,7 @@ void GameScreen::update() {
 }
 
 void GameScreen::render() {
-  auto& paddle = m_game_manager.get_paddle();
-  paddle.render();
-
-  for (auto& ball : m_game_manager.get_balls()) {
-    ball.render();
-  }
-
-  for (auto& brick : m_game_manager.get_bricks()) {
-    if (!brick.is_destroyed())
-      brick.render();
-  }
+  m_game_manager.render();
 
   std::string score_text = std::to_string(m_game_manager.get_score());
   std::string lives_text = std::to_string(m_game_manager.get_lives());

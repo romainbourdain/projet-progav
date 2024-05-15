@@ -1,7 +1,7 @@
 #include "screens/title-screen.h"
 #include <iostream>
 #include "config.h"
-#include "screens/game-screen.h"
+#include "screens/menu-screen.h"
 #include "screens/screen-manager.h"
 #include "sdl-wrapper.h"
 
@@ -20,7 +20,7 @@ void TitleScreen::load_assets() {
 void TitleScreen::handle_events() {
   if (SDL_Wrapper::is_key_pressed(SDL_SCANCODE_SPACE)) {
     m_screen_manager.change_screen(
-        std::make_shared<GameScreen>(m_screen_manager));
+        std::make_shared<MenuScreen>(m_screen_manager));
   }
 }
 

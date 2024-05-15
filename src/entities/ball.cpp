@@ -9,12 +9,16 @@ Ball::Ball(int x, int y, int width, int height, SDL_Texture_ptr& texture,
     : Entity(x, y, width, height, texture),
       m_direction(direction),
       m_speed(speed),
-      m_is_colliding(false) {}
+      m_is_colliding(false),
+      m_collision_cooldown(0.0f) {}
 
 void Ball::update() {
   Vector2D velocity = m_direction * m_speed;
   m_rect.x += velocity.x;
   m_rect.y += velocity.y;
+
+  if (m_collision_cooldown > 0.0f)
+    m_collision_cooldown -= 1.0f / Config::FRAMES_PER_SECOND;
 }
 
 void Ball::render() const {
@@ -49,7 +53,10 @@ void Ball::check_collision(Brick& brick, int& score) {
     return;
 
   SDL_Rect brick_rect = brick.get_rect();
-  if (SDL_HasIntersection(&m_rect, &brick_rect)) {
+  if (SDL_HasIntersection(&m_rect, &brick_rect) &&
+      m_collision_cooldown <= 0.0f) {
+    m_collision_cooldown = Config::COLLISION_COOLDOWN;
+
     brick.destroy();
     score += Config::BRICK_SCORE;
 

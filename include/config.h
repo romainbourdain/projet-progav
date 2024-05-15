@@ -11,6 +11,8 @@ inline constexpr int WINDOW_HEIGHT = 600;
 inline constexpr int LIFE_COUNT = 3;
 inline constexpr int BRICK_SCORE = 10;
 
+inline constexpr float COLLISION_COOLDOWN = 0.1f;
+
 inline constexpr int BALL_RADIUS = 10;
 inline constexpr float BALL_SPEED = 7.0f;
 

@@ -26,7 +26,8 @@ class Ball : public Entity {
  private:
   Vector2D<double> m_direction;
   float m_speed;
-  bool m_is_colliding;  // éviter les doubles collisions avec paddle
+  bool m_is_colliding;         // éviter les doubles collisions avec paddle
+  float m_collision_cooldown;  // éviter la double collision avec brick
 };
 
 inline Vector2D<double> Ball::get_direction() const {

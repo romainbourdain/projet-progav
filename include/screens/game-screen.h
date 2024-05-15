@@ -7,7 +7,7 @@
 
 class GameScreen : public Screen {
  public:
-  GameScreen(ScreenManager& screen_manager);
+  GameScreen(ScreenManager& screen_manager, std::string& level_path);
   void handle_events() override;
   void update() override;
   void render() override;
