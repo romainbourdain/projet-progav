@@ -29,7 +29,6 @@ GameManager::GameManager(std::string& level_path)
                          m_ball_texture, Vector2D<double>(1, -1).normalize(),
                          Config::BALL_SPEED));
   load_level();
-  std::cout << "GameManager created" << std::endl;
 }
 
 void GameManager::update() {
