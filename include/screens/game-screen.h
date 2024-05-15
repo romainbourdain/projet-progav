@@ -19,4 +19,6 @@ class GameScreen : public Screen {
 
   SDL_Texture_ptr m_score;
   SDL_Texture_ptr m_lives;
+
+  bool m_is_key_pressed;
 };

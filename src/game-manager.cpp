@@ -22,7 +22,8 @@ GameManager::GameManager(std::string& level_path)
       m_level_path(level_path),
       m_score(0),
       m_lives(Config::LIFE_COUNT),
-      m_is_playing(true) {
+      m_is_playing(true),
+      m_is_game_over(false) {
   m_balls.push_back(Ball(Config::WINDOW_WIDTH / 2, Config::WINDOW_HEIGHT / 2,
                          Config::BALL_RADIUS, Config::BALL_RADIUS,
                          m_ball_texture, Vector2D<double>(1, -1).normalize(),
@@ -57,6 +58,7 @@ void GameManager::check_collisions() {
       m_lives--;
       if (m_lives <= 0) {
         m_is_playing = false;
+        m_is_game_over = true;
       }
     }
   }
@@ -105,6 +107,7 @@ void GameManager::reset() {
   m_score = 0;
   m_lives = Config::LIFE_COUNT;
   m_is_playing = true;
+  m_is_game_over = false;
 }
 
 void GameManager::render() const {

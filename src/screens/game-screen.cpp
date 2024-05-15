@@ -4,8 +4,14 @@
 #include "screens/title-screen.h"
 #include "sdl-wrapper.h"
 
+#include <functional>
+#include <iostream>
+#include <unordered_map>
+
 GameScreen::GameScreen(ScreenManager& screen_manager, std::string& level_path)
-    : Screen(screen_manager), m_game_manager(level_path) {
+    : Screen(screen_manager),
+      m_game_manager(level_path),
+      m_is_key_pressed(false) {
   m_title_font = SDL_Wrapper::load_font("assets/fonts/Minecraft.ttf", 24);
   m_subtitle_font = SDL_Wrapper::load_font("assets/fonts/Minecraft.ttf", 16);
 
@@ -14,11 +20,37 @@ GameScreen::GameScreen(ScreenManager& screen_manager, std::string& level_path)
 }
 
 void GameScreen::handle_events() {
-  if (!m_game_manager.is_playing()) {
-    if (SDL_Wrapper::is_key_pressed(SDL_SCANCODE_SPACE)) {
-      m_game_manager.reset();
+  static const std::unordered_map<SDL_Scancode, std::function<void()>>
+      key_actions = {{SDL_SCANCODE_ESCAPE,
+                      [this]() {
+                        if (m_game_manager.is_playing()) {
+                          m_game_manager.pause();
+                        }
+                      }},
+                     {SDL_SCANCODE_SPACE, [this]() {
+                        if (!m_game_manager.is_playing()) {
+                          if (m_game_manager.is_game_over()) {
+                            m_game_manager.reset();
+                          } else {
+                            m_game_manager.resume();
+                          }
+                        }
+                      }}};
+
+  bool any_key_pressed = false;
+  for (const auto& [key, action] : key_actions) {
+    if (SDL_Wrapper::is_key_pressed(key)) {
+      if (!m_is_key_pressed) {
+        m_is_key_pressed = true;
+        action();
+      }
+      any_key_pressed = true;
+      break;
     }
-    return;
+  }
+
+  if (!any_key_pressed) {
+    m_is_key_pressed = false;
   }
 }
 
@@ -52,13 +84,19 @@ void GameScreen::render() {
     SDL_Wrapper::draw_rect(Config::WINDOW_WIDTH / 2, Config::WINDOW_HEIGHT / 2,
                            400, 150, Config::FOREGROUND_COLOR, false,
                            SDL_Wrapper::Origin::CENTER);
-
+    if (m_game_manager.is_game_over()) {
+      SDL_Wrapper::render_text(
+          "Game Over", m_title_font, Config::WINDOW_WIDTH / 2,
+          Config::WINDOW_HEIGHT / 2 - 30, Config::FOREGROUND_COLOR,
+          SDL_Wrapper::Origin::CENTER);
+    } else {
+      SDL_Wrapper::render_text("Paused", m_title_font, Config::WINDOW_WIDTH / 2,
+                               Config::WINDOW_HEIGHT / 2 - 30,
+                               Config::FOREGROUND_COLOR,
+                               SDL_Wrapper::Origin::CENTER);
+    }
     SDL_Wrapper::render_text(
-        "Game Over", m_title_font, Config::WINDOW_WIDTH / 2,
-        Config::WINDOW_HEIGHT / 2 - 30, Config::FOREGROUND_COLOR,
-        SDL_Wrapper::Origin::CENTER);
-    SDL_Wrapper::render_text(
-        "Press SPACE to restart", m_subtitle_font, Config::WINDOW_WIDTH / 2,
+        "Press SPACE to play", m_subtitle_font, Config::WINDOW_WIDTH / 2,
         Config::WINDOW_HEIGHT / 2 + 15, Config::FOREGROUND_COLOR,
         SDL_Wrapper::Origin::CENTER);
   }

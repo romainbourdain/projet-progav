@@ -18,7 +18,12 @@ class GameManager {
 
   inline int get_score() const;
   inline int get_lives() const;
+
   inline bool is_playing() const;
+  inline bool is_game_over() const;
+
+  inline void pause();
+  inline void resume();
 
  private:
   void load_level();
@@ -37,6 +42,7 @@ class GameManager {
   int m_score;
   int m_lives;
   bool m_is_playing;
+  bool m_is_game_over;
 };
 
 inline int GameManager::get_score() const {
@@ -49,4 +55,16 @@ inline int GameManager::get_lives() const {
 
 inline bool GameManager::is_playing() const {
   return m_is_playing;
+}
+
+inline bool GameManager::is_game_over() const {
+  return m_is_game_over;
+}
+
+inline void GameManager::pause() {
+  m_is_playing = false;
+}
+
+inline void GameManager::resume() {
+  m_is_playing = true;
 }

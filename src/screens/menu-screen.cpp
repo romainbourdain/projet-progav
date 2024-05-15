@@ -68,9 +68,7 @@ void MenuScreen::handle_events() {
   }
 }
 
-void MenuScreen::update() {
-  // Mise à jour de l'écran de menu
-}
+void MenuScreen::update() {}
 
 void MenuScreen::render() {
   SDL_Wrapper::render_text("Select a level", m_font, Config::WINDOW_WIDTH / 2,
