@@ -1,3 +1,8 @@
+/**
+ * @file sdl-wrapper.h
+ * @brief Classe wrapper pour encapsuler SDL.
+ */
+
 #pragma once
 
 #include <SDL.h>

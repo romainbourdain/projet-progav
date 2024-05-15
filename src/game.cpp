@@ -10,9 +10,7 @@ Game::Game(const std::string& title, int width, int height)
       std::make_shared<TitleScreen>(m_screen_manager));
 }
 
-Game::~Game() {
-  std::cout << "Game destructor" << std::endl;
-}
+Game::~Game() {}
 
 void Game::run() {
   while (m_is_running) {

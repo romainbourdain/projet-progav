@@ -13,7 +13,6 @@ MenuScreen::MenuScreen(ScreenManager& screen_manager)
     : Screen(screen_manager), m_selected_level(0), m_is_key_pressed(true) {
   load_levels();
   load_assets();
-  std::cout << "MenuScreen created" << std::endl;
 }
 
 void MenuScreen::load_assets() {
